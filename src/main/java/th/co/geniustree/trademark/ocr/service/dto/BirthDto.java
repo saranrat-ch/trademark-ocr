@@ -1,7 +1,15 @@
 package th.co.geniustree.trademark.ocr.service.dto;
 
-import th.co.geniustree.trademark.ocr.domain.CtltNiceClass;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -11,54 +19,53 @@ import java.util.List;
  */
 public class BirthDto {
 
-    private TrwStat applicantType;//ประเภทผู้ยื่น
 
+    @NotNull(message = "ไม่มีข้อมูลวันที่ยื่นคำขอ")
     private LocalDate trwDate;//วันที่ยื่นคำขอ
 
+    @NotNull(message = "ไม่มีข้อมูลประเภทคำขอ")
     private TrwType markType;//ประเภทคำขอ
 
+    @NotNull(message = "ไม่มีค่าธรรมเนียม")
     private BigDecimal feeAmount;//ค่าธรรมเนียม
 
+    @NotNull(message = "ไม่มีเลขที่คำขอ")
     private Long trNo;//เลขที่คำขอ
-
-    private Protection colorProtection;//การขอจดทะเบียนเครื่องหมายที่มีลักษณะเป็นกลุ่มสี
-
-    private String colorProtectionDescription;//คำอธิบาย การขอจดทะเบียนเครื่องหมายที่มีลักษณะเป็นกลุ่มสี
-
-    private Protection shapeProtection;//การขอจดทะเบียนเครื่องหมายที่มีลักษณะเป็นรูปร่างหรือรูปทรงของวัตถุ
-
-    private String shapeProtectionDescription;//คำอธิบาย การขอจดทะเบียนเครื่องหมายที่มีลักษณะเป็นรูปร่างหรือรูปทรงของวัตถุ
-
-    private Publish section28;//มาตรา28
 
     private OtopType otopType;//ประเภทOTOP
 
     private String otopNo;//เลขทะเบียนOTOP
 
+    @NotNull(message = "ไม่มีประเภทสถานที่ติดต่อในประเทศไทย")
     private ContactPersonOwnershipType contractType;//สถานที่ติดต่อภายในประเทศไทย
 
+    @NotBlank(message = "ไม่มีข้อมูลเลขประจำตัวประชาชน สถานที่ติดต่อในประเทศไทย")
+    private String contractCardNo;//เลขประจำตัวประชาชน สถานที่ติดต่อ
+
+    @NotBlank(message = "ไม่มีข้อมูลชื่อผู้ติดต่อ สถานที่ติดต่อในประเทศไทย")
     private String contractName;//ชื่อ สถานที่ติดต่อ
 
+    @NotBlank(message = "ไม่มีข้อมูลที่อยู่ สถานที่ติดต่อในประเทศไทย")
     private String contractAddr;//ที่อยู่ สถานที่ติดต่อ
 
-    private String contractMoo;//หมู่ สถานที่ติดต่อ
-
-    private String contractSoi;//ซอย สถานที่ติดต่อ
-
-    private String contractRoad;//ถนน สถานที่ติดต่อ
-
+    @NotBlank(message = "ไม่มีข้อมูลหมายเลขไปรษณีย์  สถานที่ติดต่อในประเทศไทย")
     private String contractPostcode;//ไปรษณีย์ สถานที่ติดต่อ
 
+    @NotBlank(message = "ไม่มีข้อมูลอีเมล์  สถานที่ติดต่อในประเทศไทย")
     private String contractEmail;//อีเมล์ สถานที่ติดต่อ
 
+    @NotBlank(message = "ไม่มีข้อมูลเบอร์โทร สถานที่ติดต่อในประเทศไทย")
     private String contractPhone;//เบอร์โทร สถานที่ติดต่อ
 
     private String contractFax;//โทรสาร สถานที่ติดต่อ
 
+    @NotBlank(message = "ไม่มีข้อมูลรหัสอำเภอ สถานที่ติดต่อในประเทศไทย")
     private String aumpCode;//รหัสอำเภอ สถานที่ติดต่อ **ดูจาก table CTLT_LOCATION
 
+    @NotBlank(message = "ไม่มีข้อมูลรหัสจังหวัด สถานที่ติดต่อในประเทศไทย")
     private String provCode;//รหัสจังหวัด สถานที่ติดต่อ **ดูจาก table CTLT_LOCATION
 
+    @NotBlank(message = "ไม่มีข้อมูลชื่อตำบล สถานที่ติดต่อในประเทศไทย")
     private String tumbonStr;//ชื่อตำบล สถานที่ติดต่อ
 
     private Flag threeDShapesFlag;//ยื่นรูปทรง 3 มิติ
@@ -69,20 +76,14 @@ public class BirthDto {
 
     private String ruleDescription;//ข้อบังคับว่าด้วยการใช้เครื่องหมายรับรอง
 
+    @NotEmpty(message = "ไม่มีข้อมูลเจ้าของ")
     private List<BirthOwnerDto> owners;//เจ้าของ เป็นArray
 
     private List<BirthAgencyDto> agencies;//ตัวแทน เป็นArray
 
+    @NotEmpty(message = "ไม่มีข้อมูลรายการสินค้า")
     private List<NiceClassDto> niceClasses;//จำพวกสินค้า เป็นArray
 
-
-    public TrwStat getApplicantType() {
-        return applicantType;
-    }
-
-    public void setApplicantType(TrwStat applicantType) {
-        this.applicantType = applicantType;
-    }
 
     public LocalDate getTrwDate() {
         return trwDate;
@@ -116,45 +117,6 @@ public class BirthDto {
         this.trNo = trNo;
     }
 
-    public Protection getColorProtection() {
-        return colorProtection;
-    }
-
-    public void setColorProtection(Protection colorProtection) {
-        this.colorProtection = colorProtection;
-    }
-
-    public String getColorProtectionDescription() {
-        return colorProtectionDescription;
-    }
-
-    public void setColorProtectionDescription(String colorProtectionDescription) {
-        this.colorProtectionDescription = colorProtectionDescription;
-    }
-
-    public Protection getShapeProtection() {
-        return shapeProtection;
-    }
-
-    public void setShapeProtection(Protection shapeProtection) {
-        this.shapeProtection = shapeProtection;
-    }
-
-    public String getShapeProtectionDescription() {
-        return shapeProtectionDescription;
-    }
-
-    public void setShapeProtectionDescription(String shapeProtectionDescription) {
-        this.shapeProtectionDescription = shapeProtectionDescription;
-    }
-
-    public Publish getSection28() {
-        return section28;
-    }
-
-    public void setSection28(Publish section28) {
-        this.section28 = section28;
-    }
 
     public OtopType getOtopType() {
         return otopType;
@@ -196,29 +158,6 @@ public class BirthDto {
         this.contractAddr = contractAddr;
     }
 
-    public String getContractMoo() {
-        return contractMoo;
-    }
-
-    public void setContractMoo(String contractMoo) {
-        this.contractMoo = contractMoo;
-    }
-
-    public String getContractSoi() {
-        return contractSoi;
-    }
-
-    public void setContractSoi(String contractSoi) {
-        this.contractSoi = contractSoi;
-    }
-
-    public String getContractRoad() {
-        return contractRoad;
-    }
-
-    public void setContractRoad(String contractRoad) {
-        this.contractRoad = contractRoad;
-    }
 
     public String getContractPostcode() {
         return contractPostcode;
@@ -332,6 +271,14 @@ public class BirthDto {
         this.ruleDescription = ruleDescription;
     }
 
+    public String getContractCardNo() {
+        return contractCardNo;
+    }
+
+    public void setContractCardNo(String contractCardNo) {
+        this.contractCardNo = contractCardNo;
+    }
+
     public enum TrwType {
         TRADE_MARK_AND_SERVICE_MARK("5"), CERTIFICATION_MARK("3"), COLLECTIVE_MARK("4");
 
@@ -343,52 +290,6 @@ public class BirthDto {
 
         public String getNumber() {
             return this.number;
-        }
-    }
-
-    public enum TrwStat {
-        OWNER("1"), AGENCY("2");
-
-        private String number;
-
-        TrwStat(String number) {
-            this.number = number;
-        }
-
-        public String getNumber() {
-            return number;
-        }
-    }
-
-    public enum Protection {
-        PROTECT, NO_PROTECT
-    }
-
-    public enum Publish {
-        PUBLISH("1"), NO_PUBLISH("2");
-
-        private String number;
-
-        Publish(String number) {
-            this.number = number;
-        }
-
-        public String getNumber() {
-            return number;
-        }
-    }
-
-    public enum Claim {
-        SEND("1"), SPARE("2"), NO_CLAIM("3");
-
-        private String number;
-
-        Claim(String number) {
-            this.number = number;
-        }
-
-        public String getNumber() {
-            return number;
         }
     }
 
@@ -422,7 +323,7 @@ public class BirthDto {
     }
 
     public enum Flag{
-        YES("1"), NO("2");
+        YES("1"), NO("0");
 
         private String number;
 

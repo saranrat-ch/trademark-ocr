@@ -62,6 +62,8 @@ public class BirthServiceImpl implements BirthService {
         sistNo01.setTrDate(birthDto.getTrwDate());
         sistNo01.setTrType(birthDto.getMarkType().getNumber());
         sistNo01.setFeeAmount(birthDto.getFeeAmount());
+        sistNo01.setContTo(birthDto.getContractType().getNumber());
+        sistNo01.setContCardNo(birthDto.getContractCardNo());
         sistNo01.setContName(birthDto.getContractName());
         sistNo01.setContAddr(birthDto.getContractAddr());
         CtltLocation location = findCtltLocation(birthDto.getProvCode(), birthDto.getAumpCode(), birthDto.getTumbonStr());

@@ -1,6 +1,7 @@
 package th.co.geniustree.trademark.ocr.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,7 @@ public class BirthResource {
 
 
     @PostMapping
-    public void saveBirth(@RequestBody BirthDto birthDto){
+    public void saveBirth(@RequestBody @Validated BirthDto birthDto){
         birthService.saveBirth(birthDto);
     }
 
