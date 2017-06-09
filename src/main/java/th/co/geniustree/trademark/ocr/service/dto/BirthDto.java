@@ -61,6 +61,14 @@ public class BirthDto {
 
     private String tumbonStr;//ชื่อตำบล สถานที่ติดต่อ
 
+    private Flag threeDShapesFlag;//ยื่นรูปทรง 3 มิติ
+
+    private Flag colorGroupsFlag;//ยื่นคุ้มครองกลุ่มสี
+
+    private Flag soundMarkFlag;//ยื่นเครื่องหมายเสียง
+
+    private String ruleDescription;//ข้อบังคับว่าด้วยการใช้เครื่องหมายรับรอง
+
     private List<BirthOwnerDto> owners;//เจ้าของ เป็นArray
 
     private List<BirthAgencyDto> agencies;//ตัวแทน เป็นArray
@@ -292,6 +300,38 @@ public class BirthDto {
         this.niceClasses = niceClasses;
     }
 
+    public Flag getThreeDShapesFlag() {
+        return threeDShapesFlag;
+    }
+
+    public void setThreeDShapesFlag(Flag threeDShapesFlag) {
+        this.threeDShapesFlag = threeDShapesFlag;
+    }
+
+    public Flag getColorGroupsFlag() {
+        return colorGroupsFlag;
+    }
+
+    public void setColorGroupsFlag(Flag colorGroupsFlag) {
+        this.colorGroupsFlag = colorGroupsFlag;
+    }
+
+    public Flag getSoundMarkFlag() {
+        return soundMarkFlag;
+    }
+
+    public void setSoundMarkFlag(Flag soundMarkFlag) {
+        this.soundMarkFlag = soundMarkFlag;
+    }
+
+    public String getRuleDescription() {
+        return ruleDescription;
+    }
+
+    public void setRuleDescription(String ruleDescription) {
+        this.ruleDescription = ruleDescription;
+    }
+
     public enum TrwType {
         TRADE_MARK_AND_SERVICE_MARK("5"), CERTIFICATION_MARK("3"), COLLECTIVE_MARK("4");
 
@@ -373,6 +413,20 @@ public class BirthDto {
         private String number;
 
         ContactPersonOwnershipType(String number) {
+            this.number = number;
+        }
+
+        public String getNumber() {
+            return number;
+        }
+    }
+
+    public enum Flag{
+        YES("1"), NO("2");
+
+        private String number;
+
+        Flag(String number) {
             this.number = number;
         }
 

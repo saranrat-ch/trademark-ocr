@@ -72,6 +72,10 @@ public class BirthServiceImpl implements BirthService {
         sistNo01.setContEmail(birthDto.getContractEmail());
         sistNo01.setOtopType(birthDto.getOtopType().getNumber());
         sistNo01.setOtopNo(birthDto.getOtopNo());
+        sistNo01.setThreeDFlag(birthDto.getThreeDShapesFlag().getNumber());
+        sistNo01.setColourgrpFlag(birthDto.getColorGroupsFlag().getNumber());
+        sistNo01.setSoundFlag(birthDto.getSoundMarkFlag().getNumber());
+        sistNo01.setRuleDesc(birthDto.getRuleDescription());
         SistRecvTm sistRecvTm = sistRecvTmRepo.findByTrNo(birthDto.getTrNo());
         sistNo01.setSistRecvTm(sistRecvTm);
 
