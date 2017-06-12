@@ -1,48 +1,61 @@
 package th.co.geniustree.trademark.ocr.service.dto;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotNull;
+
 /**
  * Created by saranrat on 7/6/2560.
  */
 public class BirthAgencyDto {
 
+    @NotNull(message = "ไม่มีข้อมูลประเภทบุคคล ตัวแทน")
     private AgencyType agencyType;
 
+    @NotNull(message = "ไม่มีข้อมูลประเภท ตัวแทน")
     private AgencyKind agencyKind;
 
+    @NotBlank(message = "ไม่มีข้อมูลชื่อ ตัวแทน")
     private String name;
 
+    @NotBlank(message = "ไม่มีข้อมูลที่อยู่ ตัวแทน")
     private String address;
 
-    private String moo;
-
-    private String soi;
-
-    private String road;
-
+    @NotBlank(message = "ไม่มีข้อมูลรหัสอำเภอ ตัวแทน")
     private String aumpCode;//รหัสอำเภอ สถานที่ติดต่อ **ดูจาก table CTLT_LOCATION
 
+    @NotBlank(message = "ไม่มีข้อมูลรหัสจังหวัด ตัวแทน")
     private String provCode;//รหัสจังหวัด สถานที่ติดต่อ **ดูจาก table CTLT_LOCATION
 
+    @NotBlank(message = "ไม่มีข้อมูลชื่อตำบล ตัวแทน")
     private String tumbonStr;//ชื่อตำบล สถานที่ติดต่อ
 
+    @NotBlank(message = "ไม่มีข้อมูลรหัสไปรษณีย์ ตัวแทน")
     private String postcode;
 
+    @NotNull(message = "ไม่มีข้อมูลIDสัญชาติ ตัวแทน")
     private Long countryId;//ID ประเทศ **ดูจาก table CTLT_COUNTRY
 
+    @NotNull(message = "ไม่มีข้อมูลIDสัญชาติ ตัวแทน")
     private Long natId;//ID สัญชาติ **ดูจาก table CTLT_NATION
 
+    @NotNull(message = "ไม่มีข้อมูลIDอาชีพ ตัวแทน")
     private Long occuId;//ID อาชีพ **ดูจาก table CTLT_OCCUPATION
 
+    @NotBlank(message = "ไม่มีข้อมูลเบอโทรศัพท์ ตัวแทน")
     private String phone;
 
     private String fax;
 
     private String email;
 
+    @NotBlank(message = "ไม่มีข้อมูลเลขประจำตัวประชาชน ตัวแทน")
     private String cardNo;//เลขประจำตัวประชาชน หรือ เลขนิติบุคคล หรือ เลขประจำตัวผู้เสียภาษี
 
+    @NotNull(message = "ไม่มีข้อมูลประเภทและหรือ ตัวแทน")
     private AndOrType andOrType;
 
+    @NotNull(message = "ไม่มีข้อมูลประเภทบัตร ตัวแทน")
     private AgencyCardType agencyCardType;
 
     public AgencyType getAgencyType() {
@@ -75,30 +88,6 @@ public class BirthAgencyDto {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getMoo() {
-        return moo;
-    }
-
-    public void setMoo(String moo) {
-        this.moo = moo;
-    }
-
-    public String getSoi() {
-        return soi;
-    }
-
-    public void setSoi(String soi) {
-        this.soi = soi;
-    }
-
-    public String getRoad() {
-        return road;
-    }
-
-    public void setRoad(String road) {
-        this.road = road;
     }
 
     public String getAumpCode() {
@@ -206,7 +195,7 @@ public class BirthAgencyDto {
     }
 
     public enum AgencyType {
-        INDIVIDUAL("1"),CORPORATION("2"), OTHER("3"),GOVERNMENT("5");
+        INDIVIDUAL("1"), CORPORATION("2"), OTHER("3"), GOVERNMENT("5");
 
         String number;
 
@@ -219,8 +208,8 @@ public class BirthAgencyDto {
         }
     }
 
-    public enum AgencyKind{
-        AGENT("1"),SUBAGENT("2");
+    public enum AgencyKind {
+        AGENT("1"), SUBAGENT("2");
 
         String number;
 
@@ -233,8 +222,8 @@ public class BirthAgencyDto {
         }
     }
 
-    public enum AndOrType{
-        AND("1"),OR("2"),AND_OR("3");
+    public enum AndOrType {
+        AND("1"), OR("2"), AND_OR("3");
 
         String number;
 

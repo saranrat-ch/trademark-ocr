@@ -76,13 +76,19 @@ public class BirthDto {
 
     private String ruleDescription;//ข้อบังคับว่าด้วยการใช้เครื่องหมายรับรอง
 
+    @Valid
     @NotEmpty(message = "ไม่มีข้อมูลเจ้าของ")
     private List<BirthOwnerDto> owners;//เจ้าของ เป็นArray
 
+    @Valid
     private List<BirthAgencyDto> agencies;//ตัวแทน เป็นArray
 
+    @Valid
     @NotEmpty(message = "ไม่มีข้อมูลรายการสินค้า")
     private List<NiceClassDto> niceClasses;//จำพวกสินค้า เป็นArray
+
+    @Valid
+    private List<BirthCombineDto> combines;//ชื่อผู้ร่วมใช้ เป็นArray
 
 
     public LocalDate getTrwDate() {
@@ -277,6 +283,14 @@ public class BirthDto {
 
     public void setContractCardNo(String contractCardNo) {
         this.contractCardNo = contractCardNo;
+    }
+
+    public List<BirthCombineDto> getCombines() {
+        return combines;
+    }
+
+    public void setCombines(List<BirthCombineDto> combines) {
+        this.combines = combines;
     }
 
     public enum TrwType {

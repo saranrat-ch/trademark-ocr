@@ -9,10 +9,7 @@ import th.co.geniustree.trademark.ocr.exception.ResourceNotFoundException;
 import th.co.geniustree.trademark.ocr.repository.*;
 import th.co.geniustree.trademark.ocr.repository.specification.CtltLocationSpecification;
 import th.co.geniustree.trademark.ocr.service.BirthService;
-import th.co.geniustree.trademark.ocr.service.dto.BirthAgencyDto;
-import th.co.geniustree.trademark.ocr.service.dto.BirthDto;
-import th.co.geniustree.trademark.ocr.service.dto.BirthOwnerDto;
-import th.co.geniustree.trademark.ocr.service.dto.NiceClassDto;
+import th.co.geniustree.trademark.ocr.service.dto.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +52,9 @@ public class BirthServiceImpl implements BirthService {
     @Autowired
     private SistRecvTmRepo sistRecvTmRepo;
 
+    @Autowired
+    private SistNo01CombineRepo sistNo01CombineRepo;
+
     @Override
     public void saveBirth(BirthDto birthDto) {
         SistNo01 sistNo01 = new SistNo01();
@@ -78,13 +78,22 @@ public class BirthServiceImpl implements BirthService {
         sistNo01.setColourgrpFlag(birthDto.getColorGroupsFlag().getNumber());
         sistNo01.setSoundFlag(birthDto.getSoundMarkFlag().getNumber());
         sistNo01.setRuleDesc(birthDto.getRuleDescription());
-        SistRecvTm sistRecvTm = sistRecvTmRepo.findByTrNo(birthDto.getTrNo());
-        sistNo01.setSistRecvTm(sistRecvTm);
+        Optional<SistRecvTm> sistRecvTm = sistRecvTmRepo.findByTrNo(birthDto.getTrNo());
+        if(!sistRecvTm.isPresent()){
+            throw new ResourceNotFoundException("ไม่มีข้อมูลเลขคำขอ");
+        }
+        sistNo01.setSistRecvTm(sistRecvTm.get());
 
         sistNo01 = sistNo01Repo.save(sistNo01);
         generateOwner(birthDto.getOwners(),sistNo01);
-        generateAgency(birthDto.getAgencies(),sistNo01);
+        if(birthDto.getAgencies() != null){
+            generateAgency(birthDto.getAgencies(),sistNo01);
+        }
+
         generateSistNo01Nice(birthDto.getNiceClasses(),sistNo01);
+        if(birthDto.getCombines() != null) {
+            generateSistNo01Combine(birthDto.getCombines(), sistNo01);
+        }
     }
 
 
@@ -163,6 +172,33 @@ public class BirthServiceImpl implements BirthService {
             sistNo01NiceList.add(sistNo01Nice);
         }
 //        return sistNo01NiceList;
+    }
+
+    private void generateSistNo01Combine(List<BirthCombineDto> birthCombineDtos,SistNo01 sistNo01){
+        Long seq =1L;
+        List<SistNo01Combine> sistNo01CombineList = new ArrayList<>();
+        for(BirthCombineDto combine:birthCombineDtos){
+            SistNo01Combine sistNo01Combine = new SistNo01Combine();
+            sistNo01Combine.setCombineSeq(seq);
+            seq ++;
+            sistNo01Combine.setCombineType(combine.getCombineType().getNumber());
+            sistNo01Combine.setCombineCardNo(combine.getCardNo());
+            sistNo01Combine.setCombineCardType(combine.getCombineCardType().getNumber());
+            sistNo01Combine.setCtltNation(findCtltNation(combine.getNatId()));
+            sistNo01Combine.setCtltOccupation(findCtltOccupation(combine.getOccuId()));
+            CtltLocation location = findCtltLocation(combine.getProvCode(), combine.getAumpCode(), combine.getTumbonStr());
+            sistNo01Combine.setCtltLocation(location);
+            sistNo01Combine.setLocCode(location.getLocCode());
+            sistNo01Combine.setCombinePostcode(combine.getPostcode());
+            sistNo01Combine.setCtltCountry(findCtltCountry(combine.getCountryId()));
+            sistNo01Combine.setCombinePhone(combine.getPhone());
+            sistNo01Combine.setCombineFax(combine.getFax());
+            sistNo01Combine.setCombineEmail(combine.getEmail());
+            sistNo01Combine.setCombineAddr(combine.getAddress());
+            sistNo01Combine.setCombineName(combine.getName());
+            sistNo01Combine.setSistNo01(sistNo01);
+            sistNo01CombineRepo.save(sistNo01Combine);
+        }
     }
 
     private CtltLocation findCtltLocation(String provCode, String aumpCode, String tumbonName) {
