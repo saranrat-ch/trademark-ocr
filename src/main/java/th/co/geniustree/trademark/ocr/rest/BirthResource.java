@@ -21,8 +21,8 @@ public class BirthResource {
 
 
     @PostMapping
-    public void saveBirth(@RequestBody @Validated BirthDto birthDto){
-        birthService.saveBirth(birthDto);
+    public String saveBirth(@RequestBody @Validated BirthDto birthDto){
+        return birthService.saveBirth(birthDto);
     }
 
 }
