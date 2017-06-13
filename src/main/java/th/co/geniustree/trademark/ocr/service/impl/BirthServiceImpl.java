@@ -5,6 +5,7 @@ import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import th.co.geniustree.trademark.ocr.domain.*;
+import th.co.geniustree.trademark.ocr.exception.ResourceExistException;
 import th.co.geniustree.trademark.ocr.exception.ResourceNotFoundException;
 import th.co.geniustree.trademark.ocr.repository.*;
 import th.co.geniustree.trademark.ocr.repository.specification.CtltLocationSpecification;
@@ -57,42 +58,48 @@ public class BirthServiceImpl implements BirthService {
 
     @Override
     public void saveBirth(BirthDto birthDto) {
-        SistNo01 sistNo01 = new SistNo01();
-        sistNo01.setTrNo(birthDto.getTrNo());
-        sistNo01.setTrDate(birthDto.getTrwDate());
-        sistNo01.setTrType(birthDto.getMarkType().getNumber());
-        sistNo01.setFeeAmount(birthDto.getFeeAmount());
-        sistNo01.setContTo(birthDto.getContractType().getNumber());
-        sistNo01.setContCardNo(birthDto.getContractCardNo());
-        sistNo01.setContName(birthDto.getContractName());
-        sistNo01.setContAddr(birthDto.getContractAddr());
-        CtltLocation location = findCtltLocation(birthDto.getProvCode(), birthDto.getAumpCode(), birthDto.getTumbonStr());
-        sistNo01.setCtltLocation(location);
-        sistNo01.setContPostcode(birthDto.getContractPostcode());
-        sistNo01.setContPhone(birthDto.getContractPhone());
-        sistNo01.setContFax(birthDto.getContractFax());
-        sistNo01.setContEmail(birthDto.getContractEmail());
-        sistNo01.setOtopType(birthDto.getOtopType().getNumber());
-        sistNo01.setOtopNo(birthDto.getOtopNo());
-        sistNo01.setThreeDFlag(birthDto.getThreeDShapesFlag().getNumber());
-        sistNo01.setColourgrpFlag(birthDto.getColorGroupsFlag().getNumber());
-        sistNo01.setSoundFlag(birthDto.getSoundMarkFlag().getNumber());
-        sistNo01.setRuleDesc(birthDto.getRuleDescription());
-        Optional<SistRecvTm> sistRecvTm = sistRecvTmRepo.findByTrNo(birthDto.getTrNo());
-        if(!sistRecvTm.isPresent()){
-            throw new ResourceNotFoundException("ไม่มีข้อมูลเลขคำขอ");
-        }
-        sistNo01.setSistRecvTm(sistRecvTm.get());
+        Optional<SistNo01> sistNo01Optional = sistNo01Repo.findByTrNo(birthDto.getTrNo());
 
-        sistNo01 = sistNo01Repo.save(sistNo01);
-        generateOwner(birthDto.getOwners(),sistNo01);
-        if(birthDto.getAgencies() != null){
-            generateAgency(birthDto.getAgencies(),sistNo01);
-        }
+        if(!sistNo01Optional.isPresent()) {
+           SistNo01 sistNo01 = new SistNo01();
+            sistNo01.setTrNo(birthDto.getTrNo());
+            sistNo01.setTrDate(birthDto.getTrwDate());
+            sistNo01.setTrType(birthDto.getMarkType().getNumber());
+            sistNo01.setFeeAmount(birthDto.getFeeAmount());
+            sistNo01.setContTo(birthDto.getContractType().getNumber());
+            sistNo01.setContCardNo(birthDto.getContractCardNo());
+            sistNo01.setContName(birthDto.getContractName());
+            sistNo01.setContAddr(birthDto.getContractAddr());
+            CtltLocation location = findCtltLocation(birthDto.getProvCode(), birthDto.getAumpCode(), birthDto.getTumbonStr());
+            sistNo01.setCtltLocation(location);
+            sistNo01.setContPostcode(birthDto.getContractPostcode());
+            sistNo01.setContPhone(birthDto.getContractPhone());
+            sistNo01.setContFax(birthDto.getContractFax());
+            sistNo01.setContEmail(birthDto.getContractEmail());
+            sistNo01.setOtopType(birthDto.getOtopType().getNumber());
+            sistNo01.setOtopNo(birthDto.getOtopNo());
+            sistNo01.setThreeDFlag(birthDto.getThreeDShapesFlag().getNumber());
+            sistNo01.setColourgrpFlag(birthDto.getColorGroupsFlag().getNumber());
+            sistNo01.setSoundFlag(birthDto.getSoundMarkFlag().getNumber());
+            sistNo01.setRuleDesc(birthDto.getRuleDescription());
+            Optional<SistRecvTm> sistRecvTm = sistRecvTmRepo.findByTrNo(birthDto.getTrNo());
+            if (!sistRecvTm.isPresent()) {
+                throw new ResourceNotFoundException("ไม่มีข้อมูลเลขคำขอ");
+            }
+            sistNo01.setSistRecvTm(sistRecvTm.get());
 
-        generateSistNo01Nice(birthDto.getNiceClasses(),sistNo01);
-        if(birthDto.getCombines() != null) {
-            generateSistNo01Combine(birthDto.getCombines(), sistNo01);
+            sistNo01 = sistNo01Repo.save(sistNo01);
+            generateOwner(birthDto.getOwners(), sistNo01);
+            if (birthDto.getAgencies() != null) {
+                generateAgency(birthDto.getAgencies(), sistNo01);
+            }
+
+            generateSistNo01Nice(birthDto.getNiceClasses(), sistNo01);
+            if (birthDto.getCombines() != null) {
+                generateSistNo01Combine(birthDto.getCombines(), sistNo01);
+            }
+        } else {
+            throw new ResourceExistException("คำขอนี้ถูกบันทึกแล้ว");
         }
     }
 
