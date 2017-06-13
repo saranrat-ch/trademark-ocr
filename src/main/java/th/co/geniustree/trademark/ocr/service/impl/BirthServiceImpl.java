@@ -57,7 +57,7 @@ public class BirthServiceImpl implements BirthService {
     private SistNo01CombineRepo sistNo01CombineRepo;
 
     @Override
-    public void saveBirth(BirthDto birthDto) {
+    public String saveBirth(BirthDto birthDto) {
         Optional<SistNo01> sistNo01Optional = sistNo01Repo.findByTrNo(birthDto.getTrNo());
 
         if(!sistNo01Optional.isPresent()) {
@@ -98,6 +98,7 @@ public class BirthServiceImpl implements BirthService {
             if (birthDto.getCombines() != null) {
                 generateSistNo01Combine(birthDto.getCombines(), sistNo01);
             }
+            return "บันทึกข้อมูลสำเร็จ";
         } else {
             throw new ResourceExistException("คำขอนี้ถูกบันทึกแล้ว");
         }
