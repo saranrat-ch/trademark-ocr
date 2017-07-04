@@ -10,7 +10,7 @@ import java.util.Optional;
  */
 public interface SistRecvTmRepo extends JpaRepository<SistRecvTm,Long> {
 
-    Optional<SistRecvTm> findByTrNo(Long trNo);
+    Optional<SistRecvTm> findByTrNoAndFormType(Long trNo,String formType);
 
     Optional<SistRecvTm> findByPayRefNo(Long payRefNo);
 }
