@@ -10,6 +10,7 @@ import th.co.geniustree.trademark.ocr.exception.ResourceNotFoundException;
 import th.co.geniustree.trademark.ocr.repository.*;
 import th.co.geniustree.trademark.ocr.repository.specification.CtltLocationSpecification;
 import th.co.geniustree.trademark.ocr.service.BirthService;
+import th.co.geniustree.trademark.ocr.service.CtltService;
 import th.co.geniustree.trademark.ocr.service.dto.*;
 
 import java.util.ArrayList;
@@ -24,19 +25,7 @@ import java.util.Optional;
 public class BirthServiceImpl implements BirthService {
 
     @Autowired
-    private CtltCountryRepo ctltCountryRepo;
-
-    @Autowired
-    private CtltLocationRepo ctltLocationRepo;
-
-    @Autowired
-    private CtltNationRepo ctltNationRepo;
-
-    @Autowired
-    private CtltOccupationRepo ctltOccupationRepo;
-
-    @Autowired
-    private CtltNiceClassRepo ctltNiceClassRepo;
+    private CtltService ctltService;
 
     @Autowired
     private SistNo01Repo sistNo01Repo;
@@ -70,7 +59,7 @@ public class BirthServiceImpl implements BirthService {
             sistNo01.setContCardNo(birthDto.getContractCardNo());
             sistNo01.setContName(birthDto.getContractName());
             sistNo01.setContAddr(birthDto.getContractAddr());
-            CtltLocation location = findCtltLocation(birthDto.getProvCode(), birthDto.getAumpCode(), birthDto.getTumbonStr());
+            CtltLocation location = ctltService.findCtltLocation(birthDto.getProvCode(), birthDto.getAumpCode(), birthDto.getTumbonStr());
             sistNo01.setCtltLocation(location);
             sistNo01.setContPostcode(birthDto.getContractPostcode());
             sistNo01.setContPhone(birthDto.getContractPhone());
@@ -105,10 +94,10 @@ public class BirthServiceImpl implements BirthService {
     }
 
 
-    private void generateOwner(List<BirthOwnerDto> birthOwnerDtos,SistNo01 sistNo01) {
+    private void generateOwner(List<OwnerDto> birthOwnerDtos, SistNo01 sistNo01) {
         List<SistNo01Owner> sistNo01OwnerList= new ArrayList<>();
         Long seq =1L;
-        for (BirthOwnerDto owner : birthOwnerDtos) {
+        for (OwnerDto owner : birthOwnerDtos) {
 
             SistNo01Owner sistNo01Owner = new SistNo01Owner();
             sistNo01Owner.setOwnerSeq(seq);
@@ -121,11 +110,11 @@ public class BirthServiceImpl implements BirthService {
             sistNo01Owner.setOwnerPhone(owner.getPhone());
             sistNo01Owner.setOwnerFax(owner.getFax());
             sistNo01Owner.setOwnerEmail(owner.getEmail());
-            sistNo01Owner.setCtltNation(findCtltNation(owner.getNatId()));
-            sistNo01Owner.setCtltOccupation(findCtltOccupation(owner.getOccuId()));
-            CtltLocation location = findCtltLocation(owner.getProvCode(), owner.getAumpCode(), owner.getTumbonStr());
+            sistNo01Owner.setCtltNation(ctltService.findCtltNation(owner.getNatId()));
+            sistNo01Owner.setCtltOccupation(ctltService.findCtltOccupation(owner.getOccuId()));
+            CtltLocation location = ctltService.findCtltLocation(owner.getProvCode(), owner.getAumpCode(), owner.getTumbonStr());
             sistNo01Owner.setCtltLocation(location);
-            sistNo01Owner.setCtltCountry(findCtltCountry(owner.getCountryId()));
+            sistNo01Owner.setCtltCountry(ctltService.findCtltCountry(owner.getCountryId()));
             sistNo01Owner.setSistNo01(sistNo01);
             sistNo01OwnerRepo.save(sistNo01Owner);
 
@@ -135,10 +124,10 @@ public class BirthServiceImpl implements BirthService {
 //        return sistNo01OwnerList;
     }
 
-    private void generateAgency(List<BirthAgencyDto> birthAgencyDtos,SistNo01 sistNo01) {
+    private void generateAgency(List<AgencyDto> birthAgencyDtos, SistNo01 sistNo01) {
         Long seq =1L;
         List<SistNo01Agency> sistNo01AgencyList = new ArrayList<>();
-        for (BirthAgencyDto agency : birthAgencyDtos) {
+        for (AgencyDto agency : birthAgencyDtos) {
 
             SistNo01Agency sistNo01Agency = new SistNo01Agency();
             sistNo01Agency.setAgenSeq(seq);
@@ -149,13 +138,13 @@ public class BirthServiceImpl implements BirthService {
             sistNo01Agency.setAgenKind(agency.getAgencyKind().getNumber());
             sistNo01Agency.setAgenType(agency.getAgencyType().getNumber());
             sistNo01Agency.setAgenName(agency.getName());
-            sistNo01Agency.setCtltNation(findCtltNation(agency.getNatId()));
-            sistNo01Agency.setCtltOccupation(findCtltOccupation(agency.getOccuId()));
+            sistNo01Agency.setCtltNation(ctltService.findCtltNation(agency.getNatId()));
+            sistNo01Agency.setCtltOccupation(ctltService.findCtltOccupation(agency.getOccuId()));
             sistNo01Agency.setAgenAddr(agency.getAddress());
-            CtltLocation location = findCtltLocation(agency.getProvCode(), agency.getAumpCode(), agency.getTumbonStr());
+            CtltLocation location = ctltService.findCtltLocation(agency.getProvCode(), agency.getAumpCode(), agency.getTumbonStr());
             sistNo01Agency.setCtltLocation(location);
             sistNo01Agency.setAgenPostcode(agency.getPostcode());
-            sistNo01Agency.setCtltCountry(findCtltCountry(agency.getCountryId()));
+            sistNo01Agency.setCtltCountry(ctltService.findCtltCountry(agency.getCountryId()));
             sistNo01Agency.setAgenPhone(agency.getPhone());
             sistNo01Agency.setAgenFax(agency.getFax());
             sistNo01Agency.setAgenEmail(agency.getEmail());
@@ -173,7 +162,7 @@ public class BirthServiceImpl implements BirthService {
         for (NiceClassDto niceClass : niceClassDtos) {
             SistNo01Nice sistNo01Nice = new SistNo01Nice();
 
-            sistNo01Nice.setCtltNiceClass(findCtltNiceClass(niceClass.getNiceClassId()));
+            sistNo01Nice.setCtltNiceClass(ctltService.findCtltNiceClass(niceClass.getNiceClassId()));
             sistNo01Nice.setNiceDetail(niceClass.getNiceDetail());
             sistNo01Nice.setSistNo01(sistNo01);
             sistNo01NiceRepo.save(sistNo01Nice);
@@ -192,13 +181,13 @@ public class BirthServiceImpl implements BirthService {
             sistNo01Combine.setCombineType(combine.getCombineType().getNumber());
             sistNo01Combine.setCombineCardNo(combine.getCardNo());
             sistNo01Combine.setCombineCardType(combine.getCombineCardType().getNumber());
-            sistNo01Combine.setCtltNation(findCtltNation(combine.getNatId()));
-            sistNo01Combine.setCtltOccupation(findCtltOccupation(combine.getOccuId()));
-            CtltLocation location = findCtltLocation(combine.getProvCode(), combine.getAumpCode(), combine.getTumbonStr());
+            sistNo01Combine.setCtltNation(ctltService.findCtltNation(combine.getNatId()));
+            sistNo01Combine.setCtltOccupation(ctltService.findCtltOccupation(combine.getOccuId()));
+            CtltLocation location = ctltService.findCtltLocation(combine.getProvCode(), combine.getAumpCode(), combine.getTumbonStr());
             sistNo01Combine.setCtltLocation(location);
             sistNo01Combine.setLocCode(location.getLocCode());
             sistNo01Combine.setCombinePostcode(combine.getPostcode());
-            sistNo01Combine.setCtltCountry(findCtltCountry(combine.getCountryId()));
+            sistNo01Combine.setCtltCountry(ctltService.findCtltCountry(combine.getCountryId()));
             sistNo01Combine.setCombinePhone(combine.getPhone());
             sistNo01Combine.setCombineFax(combine.getFax());
             sistNo01Combine.setCombineEmail(combine.getEmail());
@@ -209,36 +198,4 @@ public class BirthServiceImpl implements BirthService {
         }
     }
 
-    private CtltLocation findCtltLocation(String provCode, String aumpCode, String tumbonName) {
-        Specifications<CtltLocation> spec = Specifications.where(CtltLocationSpecification.provCodeEqual(provCode))
-                .and(CtltLocationSpecification.aumpCodeEqal(aumpCode))
-                .and(CtltLocationSpecification.tumbonNameEqal(tumbonName));
-        List<CtltLocation> locationList = ctltLocationRepo.findAll(spec);
-
-//        Optional<CtltLocation> location  = ctltLocationRepo.findByProvCodeAndAndAumpCodeAndTumbonName(provCode,aumpCode,tumbonName);
-        if (locationList.isEmpty()) {
-            throw new ResourceNotFoundException("ไม่พบที่อยู่");
-        }
-        return locationList.get(0);
-    }
-
-    private CtltNation findCtltNation(Long natId){
-        Optional<CtltNation> ctltNation = Optional.ofNullable(ctltNationRepo.findOne(natId));
-        if(!ctltNation.isPresent()){
-            throw new ResourceNotFoundException("ไม่พบเชื้อชาติ");
-        }
-        return ctltNation.get();
-    }
-
-    private CtltOccupation findCtltOccupation(Long occuId){
-        return ctltOccupationRepo.findOne(occuId);
-    }
-
-    private CtltCountry findCtltCountry(Long countryId){
-        return ctltCountryRepo.findOne(countryId);
-    }
-
-    private CtltNiceClass findCtltNiceClass(Long niceClassId){
-        return ctltNiceClassRepo.findOne(niceClassId);
-    }
 }

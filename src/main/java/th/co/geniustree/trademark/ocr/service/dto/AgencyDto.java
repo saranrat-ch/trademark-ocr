@@ -7,57 +7,71 @@ import javax.validation.constraints.NotNull;
 /**
  * Created by saranrat on 7/6/2560.
  */
-public class BirthOwnerDto {
+public class AgencyDto {
 
-    @NotNull(message = "ไม่มีข้อมูลประเภทบุคคล เจ้าของ")
-    private OwnerType ownerType;
+    @NotNull(message = "ไม่มีข้อมูลประเภทบุคคล ตัวแทน")
+    private AgencyType agencyType;
 
-    @NotBlank(message = "ไม่มีข้อมูลชื่อ เจ้าของ")
+    @NotNull(message = "ไม่มีข้อมูลประเภท ตัวแทน")
+    private AgencyKind agencyKind;
+
+    @NotBlank(message = "ไม่มีข้อมูลชื่อ ตัวแทน")
     private String name;
 
-    @NotBlank(message = "ไม่มีข้อมูลที่อยู่ เจ้าของ")
+    @NotBlank(message = "ไม่มีข้อมูลที่อยู่ ตัวแทน")
     private String address;
 
-    @NotBlank(message = "ไม่มีข้อมูลรหัสอำเภอ เจ้าของ")
+    @NotBlank(message = "ไม่มีข้อมูลรหัสอำเภอ ตัวแทน")
     private String aumpCode;//รหัสอำเภอ สถานที่ติดต่อ **ดูจาก table CTLT_LOCATION
 
-    @NotBlank(message = "ไม่มีข้อมูลรหัสจังหวัด เจ้าของ")
+    @NotBlank(message = "ไม่มีข้อมูลรหัสจังหวัด ตัวแทน")
     private String provCode;//รหัสจังหวัด สถานที่ติดต่อ **ดูจาก table CTLT_LOCATION
 
-    @NotBlank(message = "ไม่มีข้อมูลชื่อตำบล เจ้าของ")
+    @NotBlank(message = "ไม่มีข้อมูลชื่อตำบล ตัวแทน")
     private String tumbonStr;//ชื่อตำบล สถานที่ติดต่อ
 
-    @NotBlank(message = "ไม่มีข้อมูลรหัสไปรษณีย์ เจ้าของ")
+    @NotBlank(message = "ไม่มีข้อมูลรหัสไปรษณีย์ ตัวแทน")
     private String postcode;
 
-    @NotNull(message = "ไม่มีข้อมูลIDประเทศ เจ้าของ")
+    @NotNull(message = "ไม่มีข้อมูลIDสัญชาติ ตัวแทน")
     private Long countryId;//ID ประเทศ **ดูจาก table CTLT_COUNTRY
 
-    @NotNull(message = "ไม่มีข้อมูลIDสัญชาติ เจ้าของ")
+    @NotNull(message = "ไม่มีข้อมูลIDสัญชาติ ตัวแทน")
     private Long natId;//ID สัญชาติ **ดูจาก table CTLT_NATION
 
-    @NotNull(message = "ไม่มีข้อมูลIDอาชีพ เจ้าของ")
+    @NotNull(message = "ไม่มีข้อมูลIDอาชีพ ตัวแทน")
     private Long occuId;//ID อาชีพ **ดูจาก table CTLT_OCCUPATION
 
-    @NotBlank(message = "ไม่มีข้อมูลเบอร์โทรศัพท์ เจ้าของ")
+    @NotBlank(message = "ไม่มีข้อมูลเบอโทรศัพท์ ตัวแทน")
     private String phone;
 
     private String fax;
 
     private String email;
 
-    @NotBlank(message = "ไม่มีข้อมูลเลขประจำตัวประชาชน เจ้าของ")
+    @NotBlank(message = "ไม่มีข้อมูลเลขประจำตัวประชาชน ตัวแทน")
     private String cardNo;//เลขประจำตัวประชาชน หรือ เลขนิติบุคคล หรือ เลขประจำตัวผู้เสียภาษี
 
-    @NotNull(message = "ไม่มีข้อมูลประเภทบัตร เจ้าของ")
-    private OwnerCardType ownerCardType;
+    @NotNull(message = "ไม่มีข้อมูลประเภทและหรือ ตัวแทน")
+    private AndOrType andOrType;
 
-    public OwnerType getOwnerType() {
-        return ownerType;
+    @NotNull(message = "ไม่มีข้อมูลประเภทบัตร ตัวแทน")
+    private AgencyCardType agencyCardType;
+
+    public AgencyType getAgencyType() {
+        return agencyType;
     }
 
-    public void setOwnerType(OwnerType ownerType) {
-        this.ownerType = ownerType;
+    public void setAgencyType(AgencyType agencyType) {
+        this.agencyType = agencyType;
+    }
+
+    public AgencyKind getAgencyKind() {
+        return agencyKind;
+    }
+
+    public void setAgencyKind(AgencyKind agencyKind) {
+        this.agencyKind = agencyKind;
     }
 
     public String getName() {
@@ -75,7 +89,6 @@ public class BirthOwnerDto {
     public void setAddress(String address) {
         this.address = address;
     }
-
 
     public String getAumpCode() {
         return aumpCode;
@@ -165,20 +178,70 @@ public class BirthOwnerDto {
         this.cardNo = cardNo;
     }
 
-    public OwnerCardType getOwnerCardType() {
-        return ownerCardType;
+    public AndOrType getAndOrType() {
+        return andOrType;
     }
 
-    public void setOwnerCardType(OwnerCardType ownerCardType) {
-        this.ownerCardType = ownerCardType;
+    public void setAndOrType(AndOrType andOrType) {
+        this.andOrType = andOrType;
     }
 
-    public enum OwnerCardType {
+    public AgencyCardType getAgencyCardType() {
+        return agencyCardType;
+    }
+
+    public void setAgencyCardType(AgencyCardType agencyCardType) {
+        this.agencyCardType = agencyCardType;
+    }
+
+    public enum AgencyType {
+        INDIVIDUAL("1"), CORPORATION("2"), OTHER("3"), GOVERNMENT("5");
+
+        String number;
+
+        AgencyType(String number) {
+            this.number = number;
+        }
+
+        public String getNumber() {
+            return this.number;
+        }
+    }
+
+    public enum AgencyKind {
+        AGENT("1"), SUBAGENT("2");
+
+        String number;
+
+        AgencyKind(String number) {
+            this.number = number;
+        }
+
+        public String getNumber() {
+            return this.number;
+        }
+    }
+
+    public enum AndOrType {
+        AND("1"), OR("2"), AND_OR("3");
+
+        String number;
+
+        AndOrType(String number) {
+            this.number = number;
+        }
+
+        public String getNumber() {
+            return this.number;
+        }
+    }
+
+    public enum AgencyCardType {
         INDIVIDUAL("1"), CORPORATION("2"), PASSPORT("3");
 
         String number;
 
-        OwnerCardType(String number) {
+        AgencyCardType(String number) {
             this.number = number;
         }
 
@@ -187,18 +250,4 @@ public class BirthOwnerDto {
         }
     }
 
-
-    public enum OwnerType {
-        INDIVIDUAL("1"), CORPORATION("2"),OTHER("3"), FOREIGN("4"), GOVERNMENT("5");
-
-        String number;
-
-        OwnerType(String number) {
-            this.number = number;
-        }
-
-        public String getNumber() {
-            return this.number;
-        }
-    }
 }

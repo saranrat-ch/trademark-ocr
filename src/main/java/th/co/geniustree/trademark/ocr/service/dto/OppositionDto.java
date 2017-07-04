@@ -1,6 +1,5 @@
 package th.co.geniustree.trademark.ocr.service.dto;
 
-
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -11,26 +10,24 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * Created by saranrat on 5/6/2560.
+ * Created by saranrat on 3/7/2560.
  */
-public class BirthDto {
-
+public class OppositionDto {
 
     @NotNull(message = "ไม่มีข้อมูลวันที่ยื่นคำขอ")
     private LocalDate trwDate;//วันที่ยื่นคำขอ
 
-    @NotNull(message = "ไม่มีข้อมูลประเภทคำขอ")
+//    @NotNull(message = "ไม่มีข้อมูลประเภทคำขอ")
     private TrwType markType;//ประเภทคำขอ
 
     @NotNull(message = "ไม่มีค่าธรรมเนียม")
     private BigDecimal feeAmount;//ค่าธรรมเนียม
 
-    @NotNull(message = "ไม่มีเลขที่คำขอ")
-    private Long trNo;//เลขที่คำขอ
+    @NotNull(message = "ไม่มีข้อมูลเลขคำขอ")
+    private Long trNo;
 
-    private OtopType otopType;//ประเภทOTOP
-
-    private String otopNo;//เลขทะเบียนOTOP
+    @NotNull(message = " เลขอ้างอิงการชำระเงินต้องไม่เป็นค่าว่าง")
+    private Long payRefNo;
 
     @NotNull(message = "ไม่มีประเภทสถานที่ติดต่อในประเทศไทย")
     private ContactPersonOwnershipType contractType;//สถานที่ติดต่อภายในประเทศไทย
@@ -64,28 +61,15 @@ public class BirthDto {
     @NotBlank(message = "ไม่มีข้อมูลชื่อตำบล สถานที่ติดต่อในประเทศไทย")
     private String tumbonStr;//ชื่อตำบล สถานที่ติดต่อ
 
-    private Flag threeDShapesFlag;//ยื่นรูปทรง 3 มิติ
-
-    private Flag colorGroupsFlag;//ยื่นคุ้มครองกลุ่มสี
-
-    private Flag soundMarkFlag;//ยื่นเครื่องหมายเสียง
-
-    private String ruleDescription;//ข้อบังคับว่าด้วยการใช้เครื่องหมายรับรอง
-
     @Valid
-    @NotEmpty(message = "ไม่มีข้อมูลเจ้าของ")
-    private List<OwnerDto> owners;//เจ้าของ เป็นArray
+    @NotEmpty(message = "ไม่มีข้อมูลผู้คัดค้าน")
+    private List<OwnerDto> applicants;//เจ้าของ เป็นArray
 
     @Valid
     private List<AgencyDto> agencies;//ตัวแทน เป็นArray
 
     @Valid
-    @NotEmpty(message = "ไม่มีข้อมูลรายการสินค้า")
-    private List<NiceClassDto> niceClasses;//จำพวกสินค้า เป็นArray
-
-    @Valid
-    private List<BirthCombineDto> combines;//ชื่อผู้ร่วมใช้ เป็นArray
-
+    private List<OppositionRefTrNoDto>  refTrNoList;//เลขที่คำขอผู้คัดค้าน เป็นArray
 
     public LocalDate getTrwDate() {
         return trwDate;
@@ -103,14 +87,6 @@ public class BirthDto {
         this.markType = markType;
     }
 
-    public BigDecimal getFeeAmount() {
-        return feeAmount;
-    }
-
-    public void setFeeAmount(BigDecimal feeAmount) {
-        this.feeAmount = feeAmount;
-    }
-
     public Long getTrNo() {
         return trNo;
     }
@@ -119,21 +95,20 @@ public class BirthDto {
         this.trNo = trNo;
     }
 
-
-    public OtopType getOtopType() {
-        return otopType;
+    public BigDecimal getFeeAmount() {
+        return feeAmount;
     }
 
-    public void setOtopType(OtopType otopType) {
-        this.otopType = otopType;
+    public void setFeeAmount(BigDecimal feeAmount) {
+        this.feeAmount = feeAmount;
     }
 
-    public String getOtopNo() {
-        return otopNo;
+    public Long getPayRefNo() {
+        return payRefNo;
     }
 
-    public void setOtopNo(String otopNo) {
-        this.otopNo = otopNo;
+    public void setPayRefNo(Long payRefNo) {
+        this.payRefNo = payRefNo;
     }
 
     public ContactPersonOwnershipType getContractType() {
@@ -142,6 +117,14 @@ public class BirthDto {
 
     public void setContractType(ContactPersonOwnershipType contractType) {
         this.contractType = contractType;
+    }
+
+    public String getContractCardNo() {
+        return contractCardNo;
+    }
+
+    public void setContractCardNo(String contractCardNo) {
+        this.contractCardNo = contractCardNo;
     }
 
     public String getContractName() {
@@ -159,7 +142,6 @@ public class BirthDto {
     public void setContractAddr(String contractAddr) {
         this.contractAddr = contractAddr;
     }
-
 
     public String getContractPostcode() {
         return contractPostcode;
@@ -217,12 +199,12 @@ public class BirthDto {
         this.tumbonStr = tumbonStr;
     }
 
-    public List<OwnerDto> getOwners() {
-        return owners;
+    public List<OwnerDto> getApplicants() {
+        return applicants;
     }
 
-    public void setOwners(List<OwnerDto> owners) {
-        this.owners = owners;
+    public void setApplicants(List<OwnerDto> applicants) {
+        this.applicants = applicants;
     }
 
     public List<AgencyDto> getAgencies() {
@@ -233,64 +215,16 @@ public class BirthDto {
         this.agencies = agencies;
     }
 
-    public List<NiceClassDto> getNiceClasses() {
-        return niceClasses;
+    public List<OppositionRefTrNoDto> getRefTrNoList() {
+        return refTrNoList;
     }
 
-    public void setNiceClasses(List<NiceClassDto> niceClasses) {
-        this.niceClasses = niceClasses;
-    }
-
-    public Flag getThreeDShapesFlag() {
-        return threeDShapesFlag;
-    }
-
-    public void setThreeDShapesFlag(Flag threeDShapesFlag) {
-        this.threeDShapesFlag = threeDShapesFlag;
-    }
-
-    public Flag getColorGroupsFlag() {
-        return colorGroupsFlag;
-    }
-
-    public void setColorGroupsFlag(Flag colorGroupsFlag) {
-        this.colorGroupsFlag = colorGroupsFlag;
-    }
-
-    public Flag getSoundMarkFlag() {
-        return soundMarkFlag;
-    }
-
-    public void setSoundMarkFlag(Flag soundMarkFlag) {
-        this.soundMarkFlag = soundMarkFlag;
-    }
-
-    public String getRuleDescription() {
-        return ruleDescription;
-    }
-
-    public void setRuleDescription(String ruleDescription) {
-        this.ruleDescription = ruleDescription;
-    }
-
-    public String getContractCardNo() {
-        return contractCardNo;
-    }
-
-    public void setContractCardNo(String contractCardNo) {
-        this.contractCardNo = contractCardNo;
-    }
-
-    public List<BirthCombineDto> getCombines() {
-        return combines;
-    }
-
-    public void setCombines(List<BirthCombineDto> combines) {
-        this.combines = combines;
+    public void setRefTrNoList(List<OppositionRefTrNoDto> refTrNoList) {
+        this.refTrNoList = refTrNoList;
     }
 
     public enum TrwType {
-        TRADE_MARK_AND_SERVICE_MARK("5"), CERTIFICATION_MARK("3"), COLLECTIVE_MARK("4");
+        OPPOSITION("1"), DEBATE("2");
 
         String number;
 
@@ -303,41 +237,12 @@ public class BirthDto {
         }
     }
 
-    public enum OtopType{
-        NOT_OTOP("0"),SINGLE("1"),GROUP("2"),SME("3");
-
-        private String number;
-
-
-        OtopType(String number) {
-            this.number=number;
-        }
-
-        public String getNumber(){
-            return number;
-        }
-    }
-
     public enum ContactPersonOwnershipType {
-        OWNER("1"), AGENCY("2"), SUB_AGENCY("4"), OTHER("3");
+        APPLICANT("1"), AGENCY("2"), SUB_AGENCY("4"), OTHER("3");
 
         private String number;
 
         ContactPersonOwnershipType(String number) {
-            this.number = number;
-        }
-
-        public String getNumber() {
-            return number;
-        }
-    }
-
-    public enum Flag{
-        YES("1"), NO("0");
-
-        private String number;
-
-        Flag(String number) {
             this.number = number;
         }
 

@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface SistRecvTmRepo extends JpaRepository<SistRecvTm,Long> {
 
     Optional<SistRecvTm> findByTrNo(Long trNo);
+
+    Optional<SistRecvTm> findByPayRefNo(Long payRefNo);
 }
