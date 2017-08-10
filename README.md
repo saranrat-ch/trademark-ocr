@@ -9,3 +9,4 @@
 - URL สำหรับทดสอบ ก.02  คือ http://dip-import-trademark.geniustree.ath.cx/api/opposition
 - URL สำหรับทดสอบ ก.03  คือ http://dip-import-trademark.geniustree.ath.cx/api/appeal
 - URL สำหรับทดสอบ ก.04  คือ http://dip-import-trademark.geniustree.ath.cx/api/transfer
+- URL สำหรับทดสอบ ก.04  คือ http://dip-import-trademark.geniustree.ath.cx/api/licensing
