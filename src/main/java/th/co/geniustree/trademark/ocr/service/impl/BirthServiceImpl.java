@@ -71,7 +71,7 @@ public class BirthServiceImpl implements BirthService {
             sistNo01.setColourgrpFlag(birthDto.getColorGroupsFlag().getNumber());
             sistNo01.setSoundFlag(birthDto.getSoundMarkFlag().getNumber());
             sistNo01.setRuleDesc(birthDto.getRuleDescription());
-            Optional<SistRecvTm> sistRecvTm = sistRecvTmRepo.findByTrNoAndFormType(birthDto.getTrNo(),"1");
+            Optional<SistRecvTm> sistRecvTm = sistRecvTmRepo.findByTrNoAndFormType(birthDto.getTrNo(),"01");
             if (!sistRecvTm.isPresent()) {
                 throw new ResourceNotFoundException("ไม่มีข้อมูลเลขคำขอ");
             }
